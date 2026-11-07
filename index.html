@@ -1,0 +1,1345 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Samuel Lenício | Comunicador Popular, Estratégia Digital, Audiovisual & Tecnologia 3D</title>
+  <meta name="description" content="Portfólio 3D de Samuel Lenício Ferreira Pires: Comunicação popular, produção audiovisual, estratégia digital e tecnologia no Vale do Jequitinhonha e além.">
+  <meta name="keywords" content="Samuel Lenício, Comunicador Popular, Vale do Jequitinhonha, Minas Novas, Araçuaí, Audiovisual, Sistemas de Informação, Tridimensional, Three.js">
+  
+  <!-- Favicon -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⚡</text></svg>">
+
+  <!-- Google Fonts: Plus Jakarta Sans & Outfit -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800;900&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Three.js CDN for 3D WebGL Graphics -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+  <!-- Tailwind CSS CDN with Custom Plugins -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+            display: ['"Outfit"', 'sans-serif'],
+          },
+          colors: {
+            brand: {
+              50: '#fff7ed',
+              100: '#ffedd5',
+              200: '#fed7aa',
+              300: '#fdba74',
+              400: '#fb923c',
+              500: '#f97316',
+              600: '#ea580c', // Terracota Jequitinhonha
+              700: '#c2410c',
+              800: '#9a3412',
+              900: '#7c2d12',
+            },
+            amberAccent: {
+              400: '#fbbf24',
+              500: '#f59e0b',
+              600: '#d97706',
+            },
+            slateDark: {
+              900: '#0a0d14',
+              850: '#0f1422',
+              800: '#151c2e',
+              750: '#1c253d',
+              700: '#263353',
+            }
+          },
+          boxShadow: {
+            'glow': '0 0 45px -10px rgba(234, 88, 12, 0.4)',
+            'glow-amber': '0 0 40px -10px rgba(245, 158, 11, 0.45)',
+            'glow-cyan': '0 0 40px -10px rgba(6, 182, 212, 0.35)',
+            'glow-3d': '0 30px 60px -15px rgba(0, 0, 0, 0.8), 0 0 40px -10px rgba(234, 88, 12, 0.35)',
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <!-- Custom 3D & Component Styles -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-[#080b11] text-slate-100 antialiased selection:bg-brand-600 selection:text-white overflow-x-hidden font-sans">
+
+  <!-- Interactive Three.js WebGL 3D Canvas -->
+  <canvas id="webgl-canvas"></canvas>
+
+  <!-- Ambient Light Gradients (Soft Backdrop) -->
+  <div class="fixed inset-0 overflow-hidden pointer-events-none z-0">
+    <div class="absolute -top-40 -left-40 w-[32rem] h-[32rem] bg-brand-600/15 rounded-full blur-[150px]"></div>
+    <div class="absolute top-1/3 -right-40 w-[35rem] h-[35rem] bg-amberAccent-500/10 rounded-full blur-[160px]"></div>
+    <div class="absolute bottom-10 left-1/4 w-[40rem] h-[40rem] bg-cyan-600/10 rounded-full blur-[180px]"></div>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div id="toast" class="fixed bottom-6 right-6 z-50 transform translate-y-20 opacity-0 transition-all duration-300 pointer-events-none bg-slateDark-800 border border-brand-500/40 text-white px-5 py-3 rounded-xl shadow-2xl flex items-center gap-3">
+    <i data-lucide="check-circle" class="w-5 h-5 text-brand-400"></i>
+    <span id="toast-message" class="text-sm font-medium">Copiado com sucesso!</span>
+  </div>
+
+  <!-- Navigation Bar -->
+  <header class="fixed top-0 left-0 right-0 z-40 backdrop-blur-xl bg-[#080b11]/85 border-b border-white/5 transition-all duration-300" id="main-header">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-20">
+        
+        <!-- Logo / Brand with Samuel's Avatar -->
+        <a href="#hero" class="flex items-center gap-3 group">
+          <div class="relative w-11 h-11 rounded-full p-0.5 bg-gradient-to-tr from-brand-600 to-amberAccent-500 shadow-glow group-hover:scale-105 transition-transform duration-300">
+            <img src="assets/samuel.jpg" alt="Samuel Lenício" class="w-full h-full object-cover object-top rounded-full">
+            <span class="absolute bottom-0 right-0 w-3 h-3 bg-emerald-500 border-2 border-[#080b11] rounded-full"></span>
+          </div>
+          <div>
+            <div class="font-display font-bold text-lg tracking-tight text-white group-hover:text-brand-300 transition-colors flex items-center gap-2">
+              <span>Samuel Lenício</span>
+              <span class="px-1.5 py-0.5 rounded text-[10px] font-mono font-bold bg-brand-500/20 text-brand-300 border border-brand-500/30">3D</span>
+            </div>
+            <div class="text-[11px] font-medium tracking-wider uppercase text-slate-400">
+              Vale do Jequitinhonha • MG
+            </div>
+          </div>
+        </a>
+
+        <!-- Desktop Navigation Links -->
+        <nav class="hidden md:flex items-center gap-1 bg-white/5 px-3 py-1.5 rounded-full border border-white/10 backdrop-blur-md">
+          <a href="#sobre" class="px-4 py-1.5 text-xs font-semibold uppercase tracking-wider text-slate-300 hover:text-white hover:bg-white/10 rounded-full transition-all">Sobre</a>
+          <a href="#pilares" class="px-4 py-1.5 text-xs font-semibold uppercase tracking-wider text-slate-300 hover:text-white hover:bg-white/10 rounded-full transition-all">Pilares 3D</a>
+          <a href="#portfolio" class="px-4 py-1.5 text-xs font-semibold uppercase tracking-wider text-slate-300 hover:text-white hover:bg-white/10 rounded-full transition-all">Portfólio</a>
+          <a href="#case-jequi" class="px-4 py-1.5 text-xs font-semibold uppercase tracking-wider text-slate-300 hover:text-white hover:bg-white/10 rounded-full transition-all">Case +500k</a>
+          <a href="#saas" class="px-4 py-1.5 text-xs font-semibold uppercase tracking-wider text-slate-300 hover:text-white hover:bg-white/10 rounded-full transition-all">SaaS & Tech</a>
+          <a href="#contato" class="px-4 py-1.5 text-xs font-semibold uppercase tracking-wider text-slate-300 hover:text-white hover:bg-white/10 rounded-full transition-all">Contato</a>
+        </nav>
+
+        <!-- Right Action Button -->
+        <div class="hidden sm:flex items-center gap-3">
+          <a href="https://wa.me/5533999285190?text=Ol%C3%A1%20Samuel,%20vi%20seu%20portf%C3%B3lio%203D%20e%20gostaria%20de%20conversar%20sobre%20um%20projeto!" target="_blank" rel="noopener noreferrer" class="flex items-center gap-2 px-5 py-2.5 rounded-full bg-gradient-to-r from-brand-600 to-amberAccent-500 hover:from-brand-500 hover:to-amberAccent-400 text-white font-medium text-sm shadow-glow hover:shadow-glow-amber transition-all duration-300 hover:scale-105">
+            <i data-lucide="message-circle" class="w-4 h-4"></i>
+            <span>WhatsApp</span>
+          </a>
+        </div>
+
+        <!-- Mobile Menu Toggle Button -->
+        <button id="mobile-menu-btn" class="md:hidden p-2.5 rounded-lg bg-white/5 border border-white/10 text-slate-300 hover:text-white focus:outline-none" aria-label="Abrir menu">
+          <i data-lucide="menu" class="w-6 h-6"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- Mobile Dropdown Menu -->
+    <div id="mobile-menu" class="hidden md:hidden border-b border-white/10 bg-[#0c101a]/95 backdrop-blur-2xl px-6 py-6 space-y-3 transition-all duration-300">
+      <a href="#sobre" class="block py-2 text-base font-medium text-slate-300 hover:text-brand-400">Sobre Mim</a>
+      <a href="#pilares" class="block py-2 text-base font-medium text-slate-300 hover:text-brand-400">Pilares de Atuação</a>
+      <a href="#portfolio" class="block py-2 text-base font-medium text-slate-300 hover:text-brand-400">Projetos & Portfólio</a>
+      <a href="#case-jequi" class="block py-2 text-base font-medium text-slate-300 hover:text-brand-400">Destaque Sociocultural (+500k)</a>
+      <a href="#saas" class="block py-2 text-base font-medium text-slate-300 hover:text-brand-400">Soluções SaaS & Programação</a>
+      <a href="#contato" class="block py-2 text-base font-medium text-slate-300 hover:text-brand-400">Contato & Propostas</a>
+      <div class="pt-4 border-t border-white/10 flex flex-col gap-2">
+        <a href="https://wa.me/5533999285190" target="_blank" class="w-full flex items-center justify-center gap-2 py-3 rounded-xl bg-brand-600 text-white font-semibold">
+          <i data-lucide="message-circle" class="w-4 h-4"></i>
+          Falar no WhatsApp (33) 99928-5190
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <main class="relative z-10 pt-28">
+
+    <!-- HERO SECTION (3D INTERACTIVE) -->
+    <section id="hero" class="relative min-h-[92vh] flex items-center justify-center py-12 sm:py-20">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 w-full">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
+          
+          <!-- Left Column: Copy & Presentation -->
+          <div class="lg:col-span-7 space-y-6 text-center lg:text-left">
+            <!-- 3D Interactive Status Badge -->
+            <div class="inline-flex items-center gap-2.5 px-4 py-2 rounded-full bg-white/5 border border-brand-500/30 text-xs sm:text-sm font-medium text-brand-300 backdrop-blur-md">
+              <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-ping"></span>
+              <span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span>
+              <span>Minas Novas – MG • Disponível para Araçuaí & Comunidades Rurais</span>
+            </div>
+
+            <!-- Headline -->
+            <h1 class="font-display font-black text-4xl sm:text-6xl xl:text-7xl tracking-tight leading-[1.08] text-white">
+              Comunicação, <br class="hidden sm:inline">
+              <span class="bg-gradient-to-r from-brand-400 via-amberAccent-400 to-amberAccent-200 bg-clip-text text-transparent">
+                Audiovisual 3D
+              </span> <br>
+              & Tecnologia com Alma.
+            </h1>
+
+            <!-- Subtitle -->
+            <p class="text-slate-300 text-base sm:text-lg max-w-2xl leading-relaxed">
+              Olá! Sou <strong>Samuel Lenício</strong>. Conecto a potência humana e comunitária do <strong>Vale do Jequitinhonha</strong> a estratégias de posicionamento, produções audiovisuais de alto engajamento e desenvolvimento de software.
+            </p>
+
+            <!-- Quick Action Buttons -->
+            <div class="flex flex-wrap items-center justify-center lg:justify-start gap-4 pt-2">
+              <a href="#portfolio" class="px-7 py-3.5 rounded-full bg-gradient-to-r from-brand-600 to-amberAccent-500 hover:from-brand-500 hover:to-amberAccent-400 text-white font-semibold text-sm sm:text-base shadow-glow hover:shadow-glow-amber transition-all duration-300 flex items-center gap-2">
+                <span>Explorar Portfólio 3D</span>
+                <i data-lucide="arrow-right" class="w-4 h-4"></i>
+              </a>
+
+              <a href="https://wa.me/5533999285190?text=Ol%C3%A1%20Samuel,%20gostaria%20de%20conversar%20sobre%20uma%20oportunidade%20ou%20projeto!" target="_blank" rel="noopener noreferrer" class="px-7 py-3.5 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 hover:border-white/20 text-white font-medium text-sm sm:text-base backdrop-blur-md transition-all duration-300 flex items-center gap-2">
+                <i data-lucide="phone-call" class="w-4 h-4 text-brand-400"></i>
+                <span>(33) 99928-5190</span>
+              </a>
+
+              <button onclick="copyToClipboard('samuel.lenicio8@gmail.com', 'E-mail copiado!')" class="px-5 py-3.5 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 text-slate-300 hover:text-white transition-all text-sm flex items-center gap-2" title="Copiar e-mail">
+                <i data-lucide="copy" class="w-4 h-4"></i>
+                <span class="hidden sm:inline">Copiar E-mail</span>
+              </button>
+            </div>
+
+            <!-- 3D Navigation Hint -->
+            <div class="pt-3 flex items-center justify-center lg:justify-start gap-2 text-xs text-slate-400">
+              <i data-lucide="mouse-pointer-click" class="w-3.5 h-3.5 text-brand-400 animate-bounce"></i>
+              <span>Mova o mouse ou toque para interagir com o espaço e os cartões 3D</span>
+            </div>
+          </div>
+
+          <!-- Right Column: TRUE 3D HOLOGRAPHIC HERO DISPLAY WITH SAMUEL'S PHOTO -->
+          <div class="lg:col-span-5 perspective-1500">
+            <div id="hero-3d-wrapper" class="relative mx-auto max-w-md lg:max-w-none preserve-3d transition-transform duration-200 cursor-grab active:cursor-grabbing">
+              
+              <!-- 3D Backlight Glow -->
+              <div class="absolute -inset-4 rounded-[2.5rem] bg-gradient-to-r from-brand-600 via-amberAccent-500 to-cyan-500 opacity-40 blur-3xl pointer-events-none"></div>
+
+              <!-- Main 3D Card Container -->
+              <div class="relative rounded-[2.2rem] bg-slateDark-850/90 border border-white/15 p-5 sm:p-6 backdrop-blur-2xl shadow-glow-3d preserve-3d">
+                
+                <!-- Hologram Scan Line -->
+                <div class="hologram-scan"></div>
+
+                <!-- Samuel's Portrait in 3D Frame -->
+                <div class="hero-portrait-frame aspect-[4/5] relative w-full rounded-2xl overflow-hidden preserve-3d mb-5">
+                  <img src="assets/samuel.jpg" alt="Samuel Lenício Ferreira Pires" class="w-full h-full object-cover object-top">
+
+                  <!-- Soft Dark Gradient Overlay at Bottom of Photo -->
+                  <div class="absolute inset-0 bg-gradient-to-t from-[#0a0d14] via-transparent to-transparent opacity-85"></div>
+
+                  <!-- Floating 3D Badge 1 (Top Left): Territory -->
+                  <div class="absolute top-4 left-4 translate-z-40 px-3 py-1.5 rounded-full bg-[#0a0d14]/85 border border-brand-500/40 backdrop-blur-md flex items-center gap-2 shadow-lg">
+                    <i data-lucide="map-pin" class="w-3.5 h-3.5 text-brand-400"></i>
+                    <span class="text-[11px] font-bold text-white tracking-wide">Minas Novas • Araçuaí</span>
+                  </div>
+
+                  <!-- Floating 3D Badge 2 (Top Right): Disponível -->
+                  <div class="absolute top-4 right-4 translate-z-40 px-3 py-1.5 rounded-full bg-emerald-500/20 border border-emerald-500/40 backdrop-blur-md flex items-center gap-1.5 shadow-lg">
+                    <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                    <span class="text-[10px] font-black text-emerald-300 uppercase tracking-wider">Disponível</span>
+                  </div>
+
+                  <!-- Floating 3D Badge 3 (Bottom Center): Key Identification -->
+                  <div class="absolute bottom-4 left-4 right-4 translate-z-50 p-4 rounded-xl bg-slateDark-900/90 border border-white/10 backdrop-blur-xl shadow-2xl">
+                    <div class="flex items-center justify-between">
+                      <div>
+                        <h3 class="font-display font-black text-white text-lg tracking-tight">Samuel Lenício</h3>
+                        <p class="text-xs text-brand-400 font-semibold">Comunicação Popular • Audiovisual • Tecnologia</p>
+                      </div>
+                      <div class="w-9 h-9 rounded-xl bg-brand-600/30 border border-brand-500/40 text-brand-300 flex items-center justify-center">
+                        <i data-lucide="sparkles" class="w-4 h-4"></i>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- 3D Interactive Snapshot Highlights (Popping in Depth) -->
+                <div class="space-y-2.5 preserve-3d">
+                  <div class="translate-z-30 flex items-center gap-3 p-3 rounded-xl bg-white/[0.04] border border-white/5 hover:border-brand-500/30 transition-all">
+                    <div class="w-8 h-8 rounded-lg bg-brand-500/20 text-brand-400 flex items-center justify-center shrink-0">
+                      <i data-lucide="music-2" class="w-4 h-4"></i>
+                    </div>
+                    <div class="text-xs text-slate-300">
+                      <strong class="text-white">+500 Mil Visualizações:</strong> Projeto musical de transformação no Vale do Jequitinhonha (2024).
+                    </div>
+                  </div>
+
+                  <div class="translate-z-40 flex items-center gap-3 p-3 rounded-xl bg-white/[0.04] border border-white/5 hover:border-cyan-500/30 transition-all">
+                    <div class="w-8 h-8 rounded-lg bg-cyan-500/20 text-cyan-400 flex items-center justify-center shrink-0">
+                      <i data-lucide="code-2" class="w-4 h-4"></i>
+                    </div>
+                    <div class="text-xs text-slate-300">
+                      <strong class="text-white">21 SaaS & Soluções:</strong> Bacharelado em Sistemas de Informação (Newton Paiva).
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Card Bottom Actions -->
+                <div class="pt-4 grid grid-cols-2 gap-2.5 translate-z-30">
+                  <a href="#case-jequi" class="py-2.5 px-3 rounded-xl bg-gradient-to-r from-brand-600 to-amberAccent-500 text-white text-xs font-bold text-center transition-all flex items-center justify-center gap-1.5 shadow-glow">
+                    <i data-lucide="play" class="w-3.5 h-3.5 fill-white"></i>
+                    Ver Case 500k
+                  </a>
+                  <a href="#contato" class="py-2.5 px-3 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-slate-300 text-xs font-semibold text-center transition-all flex items-center justify-center gap-1.5">
+                    <i data-lucide="mail" class="w-3.5 h-3.5"></i>
+                    Enviar Mensagem
+                  </a>
+                </div>
+
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- METRICS COUNTER BAR -->
+        <div class="mt-20 pt-10 border-t border-white/10 grid grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
+          
+          <div class="card-3d p-6 rounded-2xl bg-white/[0.02] border border-white/5 backdrop-blur-sm hover:border-brand-500/30 transition-all group">
+            <div class="text-3xl sm:text-4xl font-display font-black text-brand-400 group-hover:scale-105 transition-transform duration-300">
+              +500.000
+            </div>
+            <div class="text-sm font-semibold text-white mt-1">Visualizações Somadas</div>
+            <div class="text-xs text-slate-400 mt-0.5">Em projetos musicais e socioculturais nas redes sociais.</div>
+          </div>
+
+          <div class="card-3d p-6 rounded-2xl bg-white/[0.02] border border-white/5 backdrop-blur-sm hover:border-amberAccent-500/30 transition-all group">
+            <div class="text-3xl sm:text-4xl font-display font-black text-amberAccent-400 group-hover:scale-105 transition-transform duration-300">
+              +40 Artistas
+            </div>
+            <div class="text-sm font-semibold text-white mt-1">Atendidos & Posicionados</div>
+            <div class="text-xs text-slate-400 mt-0.5">Estratégias de lançamento, identidade, distribuição e conteúdo.</div>
+          </div>
+
+          <div class="card-3d p-6 rounded-2xl bg-white/[0.02] border border-white/5 backdrop-blur-sm hover:border-cyan-500/30 transition-all group">
+            <div class="text-3xl sm:text-4xl font-display font-black text-cyan-400 group-hover:scale-105 transition-transform duration-300">
+              21 Soluções
+            </div>
+            <div class="text-sm font-semibold text-white mt-1">Digitais e SaaS Próprios</div>
+            <div class="text-xs text-slate-400 mt-0.5">Ferramentas de marketing, escrita, design e produtividade.</div>
+          </div>
+
+          <div class="card-3d p-6 rounded-2xl bg-white/[0.02] border border-white/5 backdrop-blur-sm hover:border-emerald-500/30 transition-all group">
+            <div class="text-3xl sm:text-4xl font-display font-black text-emerald-400 group-hover:scale-105 transition-transform duration-300">
+              ~5 Anos
+            </div>
+            <div class="text-sm font-semibold text-white mt-1">Trajetória Multidisciplinar</div>
+            <div class="text-xs text-slate-400 mt-0.5">Comunicação, audiovisual, ações comunitárias e código.</div>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- SOBRE MIM & HISTÓRIA (WITH CINEMATIC PORTRAIT) -->
+    <section id="sobre" class="py-24 relative bg-slateDark-900/60 border-y border-white/5">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+          
+          <!-- Left Column: Portrait & Visual Badge -->
+          <div class="lg:col-span-5 order-2 lg:order-1">
+            <div class="relative card-3d rounded-3xl p-3 bg-gradient-to-tr from-brand-600/30 to-amberAccent-500/20 border border-white/10 shadow-2xl">
+              <div class="rounded-2xl overflow-hidden aspect-[3/4] relative">
+                <img src="assets/samuel.jpg" alt="Samuel Lenício" class="w-full h-full object-cover object-top">
+                <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
+                <div class="absolute bottom-4 left-4 right-4 p-4 rounded-xl bg-black/60 backdrop-blur-md border border-white/10 text-xs text-slate-300">
+                  <div class="font-display font-bold text-white text-sm mb-1">Samuel Lenício Ferreira Pires</div>
+                  <p class="text-[11px] text-brand-300">"A tecnologia a serviço da valorização das histórias do nosso povo."</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right Column: Narrative Copy -->
+          <div class="lg:col-span-7 space-y-6 order-1 lg:order-2">
+            <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-brand-500/10 border border-brand-500/20 text-brand-400 text-xs font-semibold uppercase tracking-wider">
+              <i data-lucide="user" class="w-3.5 h-3.5"></i>
+              Biografia & Propósito
+            </div>
+
+            <h2 class="font-display font-black text-3xl sm:text-4xl text-white leading-tight">
+              A escuta do território aliada à precisão digital e tridimensional.
+            </h2>
+
+            <div class="space-y-4 text-slate-300 text-base leading-relaxed">
+              <p>
+                Crescer e atuar em <strong>Minas Novas e no Vale do Jequitinhonha</strong> me ensinou que toda grande transformação começa na escuta e na valorização das histórias reais. Minha trajetória se constrói na ponte entre essa sensibilidade comunitária e a eficiência técnica moderna.
+              </p>
+              <p>
+                Ao longo de cerca de cinco anos, liderei a mobilização e gravação de projetos que deram voz a jovens em situação de vulnerabilidade, planejei lançamentos e identidades para mais de 40 artistas independentes, criei campanhas de saúde pública com a Prefeitura e gerenciei a presença digital de clínicas e profissionais liberais.
+              </p>
+              <p>
+                Em paralelo, curso <strong>Sistemas de Informação</strong> e já desenvolvi <strong>21 ferramentas digitais próprias (SaaS)</strong>. Isso me permite olhar para qualquer desafio sob duas lentes complementares: a da <em>linguagem humana e empática</em> e a da <em>lógica de sistemas, métricas e automação</em>.
+              </p>
+            </div>
+
+            <!-- Soft skills tags -->
+            <div class="grid grid-cols-2 gap-3 pt-2">
+              <div class="flex items-center gap-2.5 text-xs text-slate-200">
+                <i data-lucide="check" class="w-4 h-4 text-brand-400 shrink-0"></i>
+                <span>Escuta ativa & diálogo comunitário</span>
+              </div>
+              <div class="flex items-center gap-2.5 text-xs text-slate-200">
+                <i data-lucide="check" class="w-4 h-4 text-brand-400 shrink-0"></i>
+                <span>Disponibilidade para Araçuaí e viagens</span>
+              </div>
+              <div class="flex items-center gap-2.5 text-xs text-slate-200">
+                <i data-lucide="check" class="w-4 h-4 text-brand-400 shrink-0"></i>
+                <span>Produção musical & fonográfica</span>
+              </div>
+              <div class="flex items-center gap-2.5 text-xs text-slate-200">
+                <i data-lucide="check" class="w-4 h-4 text-brand-400 shrink-0"></i>
+                <span>Desenvolvimento web & aplicações 3D</span>
+              </div>
+            </div>
+
+            <div class="pt-2 flex items-center gap-4">
+              <a href="#contato" class="px-6 py-3 rounded-full bg-brand-600 hover:bg-brand-500 text-white font-semibold text-sm transition-all shadow-glow">
+                Vamos Trabalhar Juntos
+              </a>
+              <a href="mailto:samuel.lenicio8@gmail.com" class="text-sm font-semibold text-slate-300 hover:text-white underline underline-offset-4 decoration-brand-500/50 hover:decoration-brand-500 transition-all">
+                samuel.lenicio8@gmail.com
+              </a>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- PILARES DE ATUAÇÃO 3D -->
+    <section id="pilares" class="py-24 relative">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <div class="text-center max-w-3xl mx-auto mb-16 space-y-4">
+          <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-brand-500/10 border border-brand-500/20 text-brand-400 text-xs font-semibold uppercase tracking-wider">
+            <i data-lucide="layers" class="w-3.5 h-3.5"></i>
+            Áreas de Especialidade
+          </div>
+          <h2 class="font-display font-black text-3xl sm:text-5xl text-white">
+            Quatro frentes unidas em um único profissional.
+          </h2>
+          <p class="text-slate-400 text-base">
+            Interaja com os cartões tridimensionais abaixo para explorar as frentes de atuação.
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          
+          <!-- Pilar 1 -->
+          <div class="card-3d p-7 rounded-3xl bg-slateDark-850 border border-white/10 hover:border-brand-500/40 transition-all duration-300 flex flex-col justify-between group">
+            <div class="space-y-4">
+              <div class="w-14 h-14 rounded-2xl bg-brand-500/15 text-brand-400 flex items-center justify-center text-2xl group-hover:scale-110 transition-transform">
+                <i data-lucide="users"></i>
+              </div>
+              <h3 class="font-display font-bold text-xl text-white">Comunicação Popular & Comunitária</h3>
+              <p class="text-xs text-slate-300 leading-relaxed">
+                Sensibilidade com territórios, comunidades rurais e juventudes. Produção de materiais educativos, cartilhas, campanhas e valorização da cultura do Vale do Jequitinhonha.
+              </p>
+              <ul class="space-y-2 text-xs text-slate-400 pt-2 border-t border-white/5">
+                <li class="flex items-center gap-2"><i data-lucide="check" class="w-3.5 h-3.5 text-brand-400"></i> Mobilização social e juvenil</li>
+                <li class="flex items-center gap-2"><i data-lucide="check" class="w-3.5 h-3.5 text-brand-400"></i> Ações educativas em escolas</li>
+                <li class="flex items-center gap-2"><i data-lucide="check" class="w-3.5 h-3.5 text-brand-400"></i> Campanhas de saúde (Dengue)</li>
+                <li class="flex items-center gap-2"><i data-lucide="check" class="w-3.5 h-3.5 text-brand-400"></i> Comunicação pastoral e eventos</li>
+              </ul>
+            </div>
+            <div class="pt-6">
+              <span class="text-[11px] font-semibold text-brand-400 uppercase tracking-wider">Território & Pessoas</span>
+            </div>
+          </div>
+
+          <!-- Pilar 2 -->
+          <div class="card-3d p-7 rounded-3xl bg-slateDark-850 border border-white/10 hover:border-amberAccent-500/40 transition-all duration-300 flex flex-col justify-between group">
+            <div class="space-y-4">
+              <div class="w-14 h-14 rounded-2xl bg-amberAccent-500/15 text-amberAccent-400 flex items-center justify-center text-2xl group-hover:scale-110 transition-transform">
+                <i data-lucide="clapperboard"></i>
+              </div>
+              <h3 class="font-display font-bold text-xl text-white">Audiovisual & Produção Musical</h3>
+              <p class="text-xs text-slate-300 leading-relaxed">
+                Captação cinematográfica, edição dinâmica e produção fonográfica completa. Especialista em contar histórias que geram identificação e viralizam com profundidade.
+              </p>
+              <ul class="space-y-2 text-xs text-slate-400 pt-2 border-t border-white/5">
+                <li class="flex items-center gap-2"><i data-lucide="check" class="w-3.5 h-3.5 text-amberAccent-400"></i> Filmmaking & Fotografia</li>
+                <li class="flex items-center gap-2"><i data-lucide="check" class="w-3.5 h-3.5 text-amberAccent-400"></i> Produção musical e arranjos</li>
+                <li class="flex items-center gap-2"><i data-lucide="check" class="w-3.5 h-3.5 text-amberAccent-400"></i> Videoclipes e Reels/Shorts</li>
+                <li class="flex items-center gap-2"><i data-lucide="check" class="w-3.5 h-3.5 text-amberAccent-400"></i> Edição Premiere / After Effects</li>
+              </ul>
+            </div>
+            <div class="pt-6">
+              <span class="text-[11px] font-semibold text-amberAccent-400 uppercase tracking-wider">Arte & Emoção</span>
+            </div>
+          </div>
+
+          <!-- Pilar 3 -->
+          <div class="card-3d p-7 rounded-3xl bg-slateDark-850 border border-white/10 hover:border-cyan-500/40 transition-all duration-300 flex flex-col justify-between group">
+            <div class="space-y-4">
+              <div class="w-14 h-14 rounded-2xl bg-cyan-500/15 text-cyan-400 flex items-center justify-center text-2xl group-hover:scale-110 transition-transform">
+                <i data-lucide="compass"></i>
+              </div>
+              <h3 class="font-display font-bold text-xl text-white">Estratégia Digital & Artistas</h3>
+              <p class="text-xs text-slate-300 leading-relaxed">
+                Planejamento de lançamentos, posicionamento de marca pessoal para médicos, psicanalistas e músicos. Gestão de redes sociais com foco em comunidade e conversão.
+              </p>
+              <ul class="space-y-2 text-xs text-slate-400 pt-2 border-t border-white/5">
+                <li class="flex items-center gap-2"><i data-lucide="check" class="w-3.5 h-3.5 text-cyan-400"></i> Mais de 40 artistas orientados</li>
+                <li class="flex items-center gap-2"><i data-lucide="check" class="w-3.5 h-3.5 text-cyan-400"></i> Gestão de tráfego pago (Cacto)</li>
+                <li class="flex items-center gap-2"><i data-lucide="check" class="w-3.5 h-3.5 text-cyan-400"></i> Inbound & E-mail Marketing</li>
+                <li class="flex items-center gap-2"><i data-lucide="check" class="w-3.5 h-3.5 text-cyan-400"></i> Meta Business Suite & Analytics</li>
+              </ul>
+            </div>
+            <div class="pt-6">
+              <span class="text-[11px] font-semibold text-cyan-400 uppercase tracking-wider">Crescimento & Métricas</span>
+            </div>
+          </div>
+
+          <!-- Pilar 4 -->
+          <div class="card-3d p-7 rounded-3xl bg-slateDark-850 border border-white/10 hover:border-emerald-500/40 transition-all duration-300 flex flex-col justify-between group">
+            <div class="space-y-4">
+              <div class="w-14 h-14 rounded-2xl bg-emerald-500/15 text-emerald-400 flex items-center justify-center text-2xl group-hover:scale-110 transition-transform">
+                <i data-lucide="terminal"></i>
+              </div>
+              <h3 class="font-display font-bold text-xl text-white">Tecnologia & Soluções 3D</h3>
+              <p class="text-xs text-slate-300 leading-relaxed">
+                Graduando em Sistemas de Informação. Criação de sites modernos de alta performance, e-commerces, sistemas web e ferramentas de software proprietárias.
+              </p>
+              <ul class="space-y-2 text-xs text-slate-400 pt-2 border-t border-white/5">
+                <li class="flex items-center gap-2"><i data-lucide="check" class="w-3.5 h-3.5 text-emerald-400"></i> 21 ferramentas SaaS criadas</li>
+                <li class="flex items-center gap-2"><i data-lucide="check" class="w-3.5 h-3.5 text-emerald-400"></i> Sites responsivos e Landing Pages</li>
+                <li class="flex items-center gap-2"><i data-lucide="check" class="w-3.5 h-3.5 text-emerald-400"></i> Three.js, JavaScript, React</li>
+                <li class="flex items-center gap-2"><i data-lucide="check" class="w-3.5 h-3.5 text-emerald-400"></i> Java, C#, Git e Arquitetura</li>
+              </ul>
+            </div>
+            <div class="pt-6">
+              <span class="text-[11px] font-semibold text-emerald-400 uppercase tracking-wider">Código & Inovação</span>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- CASE DESTAQUE: VALE DO JEQUITINHONHA (+500K VIEWS) -->
+    <section id="case-jequi" class="py-24 relative bg-gradient-to-b from-[#0c111e] via-[#090d16] to-[#080b11] border-y border-white/5">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <div class="card-3d p-8 sm:p-12 lg:p-16 rounded-3xl bg-slateDark-850/90 border border-brand-500/30 shadow-glow relative overflow-hidden">
+          
+          <div class="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
+            
+            <div class="lg:col-span-7 space-y-6">
+              <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-brand-500/20 border border-brand-500/40 text-brand-300 text-xs font-bold uppercase tracking-wider">
+                <i data-lucide="sparkles" class="w-4 h-4"></i>
+                Case Destaque de Impacto Social • 2024
+              </div>
+
+              <h2 class="font-display font-black text-3xl sm:text-4xl lg:text-5xl text-white leading-tight">
+                Música, Identidade e Mais de 500 Mil Visualizações no Vale.
+              </h2>
+
+              <p class="text-slate-300 text-base sm:text-lg leading-relaxed">
+                Em 2024, idealizei e executei no Vale do Jequitinhonha uma iniciativa sociocultural inédita que utilizou a música como ferramenta de expressão, inclusão e protagonismo para jovens em situação de vulnerabilidade social.
+              </p>
+
+              <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-2">
+                <div class="p-4 rounded-xl bg-white/[0.04] border border-white/10">
+                  <div class="text-2xl font-black text-brand-400 font-display">+500.000</div>
+                  <div class="text-xs text-slate-300 mt-1 font-medium">Visualizações Somadas</div>
+                  <div class="text-[11px] text-slate-500">TikTok, Instagram e YouTube</div>
+                </div>
+
+                <div class="p-4 rounded-xl bg-white/[0.04] border border-white/10">
+                  <div class="text-2xl font-black text-amberAccent-400 font-display">+7.000</div>
+                  <div class="text-xs text-slate-300 mt-1 font-medium">Acessos na Prévia</div>
+                  <div class="text-[11px] text-slate-500">Engajamento orgânico local</div>
+                </div>
+
+                <div class="p-4 rounded-xl bg-white/[0.04] border border-white/10">
+                  <div class="text-2xl font-black text-emerald-400 font-display">100%</div>
+                  <div class="text-xs text-slate-300 mt-1 font-medium">Ciclo Completo</div>
+                  <div class="text-[11px] text-slate-500">Composição, Gravação & Clipe</div>
+                </div>
+              </div>
+
+              <div class="space-y-3 text-sm text-slate-300 pt-2">
+                <div class="flex items-start gap-3">
+                  <i data-lucide="check-circle" class="w-5 h-5 text-brand-400 shrink-0 mt-0.5"></i>
+                  <span><strong>Mobilização & Escuta:</strong> Trabalho direto com os jovens, construindo vínculo, confiança e incentivando a composição autoral de suas realidades.</span>
+                </div>
+                <div class="flex items-start gap-3">
+                  <i data-lucide="check-circle" class="w-5 h-5 text-brand-400 shrink-0 mt-0.5"></i>
+                  <span><strong>Produção Fonográfica & Audiovisual:</strong> Gravação das vozes, arranjos musicais, captação das cenas no território e edição cinematográfica do videoclipe.</span>
+                </div>
+                <div class="flex items-start gap-3">
+                  <i data-lucide="check-circle" class="w-5 h-5 text-brand-400 shrink-0 mt-0.5"></i>
+                  <span><strong>Legado Vivo:</strong> Os jovens participantes passaram a realizar apresentações musicais ao vivo e a ocupar espaços culturais na região.</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Right Box: Visual presentation -->
+            <div class="lg:col-span-5">
+              <div class="rounded-2xl bg-black/60 border border-white/10 p-6 space-y-6 backdrop-blur-md">
+                <div class="flex items-center justify-between pb-3 border-b border-white/10">
+                  <div class="flex items-center gap-2 text-xs font-semibold text-slate-300">
+                    <i data-lucide="disc" class="w-4 h-4 text-brand-400 animate-spin"></i>
+                    <span>Vale do Jequitinhonha • Transformação Musical</span>
+                  </div>
+                  <span class="text-[11px] text-amberAccent-400 font-mono">2024</span>
+                </div>
+
+                <!-- Simulation Preview Window -->
+                <div class="relative rounded-xl overflow-hidden aspect-video bg-gradient-to-tr from-brand-900 via-slateDark-900 to-amber-900 flex items-center justify-center group cursor-pointer border border-white/10" onclick="openModal('jequi')">
+                  <div class="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-colors"></div>
+                  
+                  <div class="relative z-10 w-16 h-16 rounded-full bg-brand-600/90 text-white flex items-center justify-center shadow-glow group-hover:scale-110 transition-transform">
+                    <i data-lucide="play" class="w-7 h-7 fill-white translate-x-0.5"></i>
+                  </div>
+
+                  <div class="absolute bottom-3 left-3 right-3 flex items-center justify-between text-xs text-white/90 bg-black/60 backdrop-blur-md px-3 py-1.5 rounded-lg">
+                    <span>Clique para ver detalhes do projeto</span>
+                    <i data-lucide="maximize-2" class="w-3.5 h-3.5"></i>
+                  </div>
+                </div>
+
+                <div class="p-3.5 rounded-xl bg-white/[0.03] border border-white/5 text-xs text-slate-400 leading-relaxed italic">
+                  "A música foi a ponte para abrir portas de dignidade e expressão cultural para a juventude da nossa terra."
+                </div>
+
+                <a href="https://wa.me/5533999285190?text=Samuel,%20quero%20saber%20mais%20sobre%20o%20projeto%20musical%20do%20Vale%20do%20Jequitinhonha!" target="_blank" class="w-full flex items-center justify-center gap-2 py-3 rounded-xl bg-gradient-to-r from-brand-600 to-amberAccent-500 hover:from-brand-500 hover:to-amberAccent-400 text-white font-semibold text-sm shadow-glow transition-all">
+                  <i data-lucide="message-square" class="w-4 h-4"></i>
+                  Conversar Sobre Este Projeto
+                </a>
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- PORTFÓLIO & CASES REAIS -->
+    <section id="portfolio" class="py-24 relative">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <div class="flex flex-col md:flex-row md:items-end justify-between mb-12 gap-6">
+          <div class="space-y-3">
+            <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-brand-500/10 border border-brand-500/20 text-brand-400 text-xs font-semibold uppercase tracking-wider">
+              <i data-lucide="folder-git-2" class="w-3.5 h-3.5"></i>
+              Trabalhos Selecionados
+            </div>
+            <h2 class="font-display font-black text-3xl sm:text-5xl text-white">
+              Portfólio & Casos de Sucesso
+            </h2>
+            <p class="text-slate-400 text-base max-w-xl">
+              Confira projetos reais de sites profissionais, estratégias de mídia social, audiovisual e mobilização educativa.
+            </p>
+          </div>
+
+          <!-- Filter Buttons -->
+          <div class="flex flex-wrap items-center gap-2 bg-white/5 p-1.5 rounded-2xl border border-white/10 backdrop-blur-md" id="portfolio-filters">
+            <button class="filter-btn active px-4 py-2 rounded-xl text-xs font-bold transition-all bg-brand-600 text-white" data-filter="all">Todos</button>
+            <button class="filter-btn px-4 py-2 rounded-xl text-xs font-semibold text-slate-300 hover:text-white transition-all" data-filter="web">Sites & Digital</button>
+            <button class="filter-btn px-4 py-2 rounded-xl text-xs font-semibold text-slate-300 hover:text-white transition-all" data-filter="audiovisual">Audiovisual & Música</button>
+            <button class="filter-btn px-4 py-2 rounded-xl text-xs font-semibold text-slate-300 hover:text-white transition-all" data-filter="social">Social & Comunitário</button>
+          </div>
+        </div>
+
+        <!-- Portfolio Cards Grid -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="portfolio-grid">
+          
+          <!-- ITEM 1: Psicanalista Lilian Oliveira -->
+          <div class="portfolio-item card-3d group rounded-3xl bg-slateDark-850 border border-white/10 hover:border-brand-500/40 overflow-hidden transition-all duration-300 flex flex-col justify-between" data-category="web">
+            <div>
+              <div class="relative aspect-video bg-gradient-to-tr from-purple-950 via-slateDark-900 to-brand-950 overflow-hidden flex items-center justify-center p-6 border-b border-white/10">
+                <div class="text-center space-y-2">
+                  <div class="w-12 h-12 mx-auto rounded-2xl bg-white/10 flex items-center justify-center text-purple-300">
+                    <i data-lucide="globe" class="w-6 h-6"></i>
+                  </div>
+                  <span class="text-xs uppercase font-mono tracking-widest text-purple-300">Site & Presença</span>
+                  <h4 class="font-display font-bold text-lg text-white">Lilian Oliveira Psicanálise</h4>
+                </div>
+                <div class="absolute top-3 right-3">
+                  <span class="px-2.5 py-1 rounded-full text-[10px] font-bold bg-white/10 text-white backdrop-blur-md">
+                    Web & Social
+                  </span>
+                </div>
+              </div>
+
+              <div class="p-6 space-y-4">
+                <h3 class="font-display font-bold text-xl text-white group-hover:text-brand-300 transition-colors">
+                  Lilian Oliveira — Presença Digital e Site
+                </h3>
+                <p class="text-xs text-slate-300 leading-relaxed">
+                  Desenvolvimento completo do site profissional e estruturação da presença digital para captação de pacientes e fortalecimento da autoridade clínica.
+                </p>
+                <div class="space-y-1 text-xs text-slate-400">
+                  <div class="flex items-center gap-2">
+                    <i data-lucide="external-link" class="w-3.5 h-3.5 text-brand-400"></i>
+                    <span>Domínio: psicanalistalilianoliveira.com</span>
+                  </div>
+                  <div class="flex items-center gap-2">
+                    <i data-lucide="instagram" class="w-3.5 h-3.5 text-pink-400"></i>
+                    <span>Instagram: @psi.lilianoliveira</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="p-6 pt-0 flex items-center gap-3">
+              <a href="https://www.psicanalistalilianoliveira.com/" target="_blank" rel="noopener noreferrer" class="flex-1 py-2.5 px-3 rounded-xl bg-brand-600/20 hover:bg-brand-600 text-brand-300 hover:text-white text-xs font-semibold text-center border border-brand-500/30 transition-all flex items-center justify-center gap-1.5">
+                <i data-lucide="globe" class="w-3.5 h-3.5"></i>
+                Visitar Site
+              </a>
+              <a href="https://www.instagram.com/psi.lilianoliveira/" target="_blank" rel="noopener noreferrer" class="p-2.5 rounded-xl bg-white/5 hover:bg-white/10 text-slate-300 hover:text-white border border-white/10 transition-all" title="Ver Instagram">
+                <i data-lucide="instagram" class="w-4 h-4"></i>
+              </a>
+            </div>
+          </div>
+
+          <!-- ITEM 2: Dr. Walmir Rocha -->
+          <div class="portfolio-item card-3d group rounded-3xl bg-slateDark-850 border border-white/10 hover:border-brand-500/40 overflow-hidden transition-all duration-300 flex flex-col justify-between" data-category="web">
+            <div>
+              <div class="relative aspect-video bg-gradient-to-tr from-blue-950 via-slateDark-900 to-cyan-950 overflow-hidden flex items-center justify-center p-6 border-b border-white/10">
+                <div class="text-center space-y-2">
+                  <div class="w-12 h-12 mx-auto rounded-2xl bg-white/10 flex items-center justify-center text-cyan-300">
+                    <i data-lucide="activity" class="w-6 h-6"></i>
+                  </div>
+                  <span class="text-xs uppercase font-mono tracking-widest text-cyan-300">Gestão Médica</span>
+                  <h4 class="font-display font-bold text-lg text-white">Dr. Walmir Rocha</h4>
+                </div>
+                <div class="absolute top-3 right-3">
+                  <span class="px-2.5 py-1 rounded-full text-[10px] font-bold bg-white/10 text-white backdrop-blur-md">
+                    Social Media
+                  </span>
+                </div>
+              </div>
+
+              <div class="p-6 space-y-4">
+                <h3 class="font-display font-bold text-xl text-white group-hover:text-cyan-300 transition-colors">
+                  Dr. Walmir Rocha — Gerenciamento de Perfil
+                </h3>
+                <p class="text-xs text-slate-300 leading-relaxed">
+                  Planejamento editorial, produção de conteúdos informativos em saúde, design gráfico de carrosséis e gestão estratégica de audiência no Instagram.
+                </p>
+                <div class="space-y-1 text-xs text-slate-400">
+                  <div class="flex items-center gap-2">
+                    <i data-lucide="instagram" class="w-3.5 h-3.5 text-pink-400"></i>
+                    <span>Instagram: @drwalmirrocha</span>
+                  </div>
+                  <div class="flex items-center gap-2">
+                    <i data-lucide="check" class="w-3.5 h-3.5 text-cyan-400"></i>
+                    <span>Comunicação em saúde ética e humanizada</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="p-6 pt-0">
+              <a href="https://www.instagram.com/drwalmirrocha/" target="_blank" rel="noopener noreferrer" class="w-full py-2.5 px-3 rounded-xl bg-cyan-600/20 hover:bg-cyan-600 text-cyan-300 hover:text-white text-xs font-semibold text-center border border-cyan-500/30 transition-all flex items-center justify-center gap-1.5">
+                <i data-lucide="instagram" class="w-3.5 h-3.5"></i>
+                Ver Perfil no Instagram
+              </a>
+            </div>
+          </div>
+
+          <!-- ITEM 3: Obra Digital & 40 Artistas -->
+          <div class="portfolio-item card-3d group rounded-3xl bg-slateDark-850 border border-white/10 hover:border-brand-500/40 overflow-hidden transition-all duration-300 flex flex-col justify-between" data-category="audiovisual">
+            <div>
+              <div class="relative aspect-video bg-gradient-to-tr from-amber-950 via-slateDark-900 to-brand-950 overflow-hidden flex items-center justify-center p-6 border-b border-white/10">
+                <div class="text-center space-y-2">
+                  <div class="w-12 h-12 mx-auto rounded-2xl bg-white/10 flex items-center justify-center text-amberAccent-300">
+                    <i data-lucide="headphones" class="w-6 h-6"></i>
+                  </div>
+                  <span class="text-xs uppercase font-mono tracking-widest text-amberAccent-300">Distribuidora Musical</span>
+                  <h4 class="font-display font-bold text-lg text-white">Obra Digital</h4>
+                </div>
+                <div class="absolute top-3 right-3">
+                  <span class="px-2.5 py-1 rounded-full text-[10px] font-bold bg-amberAccent-500/20 text-amberAccent-300 border border-amberAccent-500/30 backdrop-blur-md">
+                    +40 Artistas
+                  </span>
+                </div>
+              </div>
+
+              <div class="p-6 space-y-4">
+                <h3 class="font-display font-bold text-xl text-white group-hover:text-amberAccent-300 transition-colors">
+                  Obra Digital — Estratégia Artística
+                </h3>
+                <p class="text-xs text-slate-300 leading-relaxed">
+                  Colaboração no planejamento de comunicação, posicionamento de marca, campanhas de lançamentos de singles/álbuns e relacionamento com fãs para mais de 40 artistas musicais ao longo de ~5 anos.
+                </p>
+                <div class="space-y-1 text-xs text-slate-400">
+                  <div class="flex items-center gap-2">
+                    <i data-lucide="calendar" class="w-3.5 h-3.5 text-amberAccent-400"></i>
+                    <span>Atuação contínua como Freelancer Estrategista</span>
+                  </div>
+                  <div class="flex items-center gap-2">
+                    <i data-lucide="music" class="w-3.5 h-3.5 text-amberAccent-400"></i>
+                    <span>Identidade visual, pré-save e tráfego de lançamento</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="p-6 pt-0">
+              <button onclick="openModal('obra')" class="w-full py-2.5 px-3 rounded-xl bg-white/5 hover:bg-white/10 text-slate-200 text-xs font-semibold text-center border border-white/10 transition-all flex items-center justify-center gap-1.5">
+                <i data-lucide="info" class="w-3.5 h-3.5"></i>
+                Ver Detalhes da Estratégia
+              </button>
+            </div>
+          </div>
+
+          <!-- ITEM 4: Real Bia Song -->
+          <div class="portfolio-item card-3d group rounded-3xl bg-slateDark-850 border border-white/10 hover:border-brand-500/40 overflow-hidden transition-all duration-300 flex flex-col justify-between" data-category="audiovisual">
+            <div>
+              <div class="relative aspect-video bg-gradient-to-tr from-rose-950 via-slateDark-900 to-amber-950 overflow-hidden flex items-center justify-center p-6 border-b border-white/10">
+                <div class="text-center space-y-2">
+                  <div class="w-12 h-12 mx-auto rounded-2xl bg-white/10 flex items-center justify-center text-rose-300">
+                    <i data-lucide="mic-2" class="w-6 h-6"></i>
+                  </div>
+                  <span class="text-xs uppercase font-mono tracking-widest text-rose-300">Carreira Musical</span>
+                  <h4 class="font-display font-bold text-lg text-white">Real Bia Song</h4>
+                </div>
+                <div class="absolute top-3 right-3">
+                  <span class="px-2.5 py-1 rounded-full text-[10px] font-bold bg-white/10 text-white backdrop-blur-md">
+                    Gestão Artística
+                  </span>
+                </div>
+              </div>
+
+              <div class="p-6 space-y-4">
+                <h3 class="font-display font-bold text-xl text-white group-hover:text-rose-300 transition-colors">
+                  Real Bia Song — Comunicação & Gestão
+                </h3>
+                <p class="text-xs text-slate-300 leading-relaxed">
+                  Apoio ao gerenciamento artístico, roteirização de conteúdos em vídeo para redes sociais, identidade e planejamento de divulgação de músicas autorais.
+                </p>
+                <div class="space-y-1 text-xs text-slate-400">
+                  <div class="flex items-center gap-2">
+                    <i data-lucide="instagram" class="w-3.5 h-3.5 text-pink-400"></i>
+                    <span>Instagram: @realbiasong</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="p-6 pt-0">
+              <a href="https://www.instagram.com/realbiasong/" target="_blank" rel="noopener noreferrer" class="w-full py-2.5 px-3 rounded-xl bg-rose-600/20 hover:bg-rose-600 text-rose-300 hover:text-white text-xs font-semibold text-center border border-rose-500/30 transition-all flex items-center justify-center gap-1.5">
+                <i data-lucide="instagram" class="w-3.5 h-3.5"></i>
+                Ver Perfil @realbiasong
+              </a>
+            </div>
+          </div>
+
+          <!-- ITEM 5: Prefeitura de Minas Novas (Ações Educativas & Dengue) -->
+          <div class="portfolio-item card-3d group rounded-3xl bg-slateDark-850 border border-white/10 hover:border-brand-500/40 overflow-hidden transition-all duration-300 flex flex-col justify-between" data-category="social">
+            <div>
+              <div class="relative aspect-video bg-gradient-to-tr from-emerald-950 via-slateDark-900 to-amber-950 overflow-hidden flex items-center justify-center p-6 border-b border-white/10">
+                <div class="text-center space-y-2">
+                  <div class="w-12 h-12 mx-auto rounded-2xl bg-white/10 flex items-center justify-center text-emerald-300">
+                    <i data-lucide="school" class="w-6 h-6"></i>
+                  </div>
+                  <span class="text-xs uppercase font-mono tracking-widest text-emerald-300">Setor Público • 2024</span>
+                  <h4 class="font-display font-bold text-lg text-white">Prefeitura de Minas Novas</h4>
+                </div>
+                <div class="absolute top-3 right-3">
+                  <span class="px-2.5 py-1 rounded-full text-[10px] font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 backdrop-blur-md">
+                    Mobilização Social
+                  </span>
+                </div>
+              </div>
+
+              <div class="p-6 space-y-4">
+                <h3 class="font-display font-bold text-xl text-white group-hover:text-emerald-300 transition-colors">
+                  Ações Educativas & Mobilização Escolar
+                </h3>
+                <p class="text-xs text-slate-300 leading-relaxed">
+                  Atuação direta em escolas municipais com ações de conscientização e combate à dengue, criação de músicas e jogos educativos infantis, cobertura fotográfica e vídeos institucionais.
+                </p>
+                <div class="space-y-1 text-xs text-slate-400">
+                  <div class="flex items-center gap-2">
+                    <i data-lucide="gamepad-2" class="w-3.5 h-3.5 text-emerald-400"></i>
+                    <span>Criação de jogos e músicas para o público infantil</span>
+                  </div>
+                  <div class="flex items-center gap-2">
+                    <i data-lucide="video" class="w-3.5 h-3.5 text-emerald-400"></i>
+                    <span>Produção de vídeos e mobilização da comunidade escolar</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="p-6 pt-0">
+              <button onclick="openModal('prefeitura')" class="w-full py-2.5 px-3 rounded-xl bg-emerald-600/20 hover:bg-emerald-600 text-emerald-300 hover:text-white text-xs font-semibold text-center border border-emerald-500/30 transition-all flex items-center justify-center gap-1.5">
+                <i data-lucide="info" class="w-3.5 h-3.5"></i>
+                Ver Detalhes do Projeto
+              </button>
+            </div>
+          </div>
+
+          <!-- ITEM 6: Comunicação Pastoral, Religiosa & Comunitária -->
+          <div class="portfolio-item card-3d group rounded-3xl bg-slateDark-850 border border-white/10 hover:border-brand-500/40 overflow-hidden transition-all duration-300 flex flex-col justify-between" data-category="social">
+            <div>
+              <div class="relative aspect-video bg-gradient-to-tr from-amber-950 via-slateDark-900 to-orange-950 overflow-hidden flex items-center justify-center p-6 border-b border-white/10">
+                <div class="text-center space-y-2">
+                  <div class="w-12 h-12 mx-auto rounded-2xl bg-white/10 flex items-center justify-center text-amber-300">
+                    <i data-lucide="church" class="w-6 h-6"></i>
+                  </div>
+                  <span class="text-xs uppercase font-mono tracking-widest text-amber-300">Diocese de Capelinha</span>
+                  <h4 class="font-display font-bold text-lg text-white">Comunicação Pastoral</h4>
+                </div>
+                <div class="absolute top-3 right-3">
+                  <span class="px-2.5 py-1 rounded-full text-[10px] font-bold bg-white/10 text-white backdrop-blur-md">
+                    Comunitário
+                  </span>
+                </div>
+              </div>
+
+              <div class="p-6 space-y-4">
+                <h3 class="font-display font-bold text-xl text-white group-hover:text-amberAccent-300 transition-colors">
+                  Pastoral da Juventude, DNJ & Missões
+                </h3>
+                <p class="text-xs text-slate-300 leading-relaxed">
+                  Comunicação participativa em eventos e missões juvenis (DNJ, EAC, EJC, Semana da Família). Registro audiovisual, produção de videoclipes e canções com padres e músicos católicos.
+                </p>
+                <div class="space-y-1 text-xs text-slate-400">
+                  <div class="flex items-center gap-2">
+                    <i data-lucide="music-4" class="w-3.5 h-3.5 text-amberAccent-400"></i>
+                    <span>Gravação de músicas e clipes religiosos</span>
+                  </div>
+                  <div class="flex items-center gap-2">
+                    <i data-lucide="users-round" class="w-3.5 h-3.5 text-amberAccent-400"></i>
+                    <span>Mobilização e acolhimento juvenil nas paróquias</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="p-6 pt-0">
+              <button onclick="openModal('pastoral')" class="w-full py-2.5 px-3 rounded-xl bg-white/5 hover:bg-white/10 text-slate-200 text-xs font-semibold text-center border border-white/10 transition-all flex items-center justify-center gap-1.5">
+                <i data-lucide="info" class="w-3.5 h-3.5"></i>
+                Ver Relato & Impacto
+              </button>
+            </div>
+          </div>
+
+          <!-- ITEM 7: Exemplo de Produção Audiovisual Publicada -->
+          <div class="portfolio-item card-3d group rounded-3xl bg-slateDark-850 border border-white/10 hover:border-brand-500/40 overflow-hidden transition-all duration-300 flex flex-col justify-between" data-category="audiovisual">
+            <div>
+              <div class="relative aspect-video bg-gradient-to-tr from-brand-950 via-slateDark-900 to-amber-950 overflow-hidden flex items-center justify-center p-6 border-b border-white/10">
+                <div class="text-center space-y-2">
+                  <div class="w-12 h-12 mx-auto rounded-2xl bg-brand-500/20 text-brand-400 flex items-center justify-center">
+                    <i data-lucide="film" class="w-6 h-6"></i>
+                  </div>
+                  <span class="text-xs uppercase font-mono tracking-widest text-brand-400">Vídeo & Fotografia</span>
+                  <h4 class="font-display font-bold text-lg text-white">Produção & Edição Audiovisual</h4>
+                </div>
+                <div class="absolute top-3 right-3">
+                  <span class="px-2.5 py-1 rounded-full text-[10px] font-bold bg-white/10 text-white backdrop-blur-md">
+                    Vídeo Real
+                  </span>
+                </div>
+              </div>
+
+              <div class="p-6 space-y-4">
+                <h3 class="font-display font-bold text-xl text-white group-hover:text-brand-300 transition-colors">
+                  Produção e Edição Audiovisual Publicada
+                </h3>
+                <p class="text-xs text-slate-300 leading-relaxed">
+                  Registro cinematográfico, edição dinâmica e tratamento de cor publicado no Instagram com alta retenção e impacto estético.
+                </p>
+                <div class="space-y-1 text-xs text-slate-400">
+                  <div class="flex items-center gap-2">
+                    <i data-lucide="video" class="w-3.5 h-3.5 text-brand-400"></i>
+                    <span>Direção, captação e montagem</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="p-6 pt-0">
+              <a href="https://www.instagram.com/p/DdqZtBXOR7l/" target="_blank" rel="noopener noreferrer" class="w-full py-2.5 px-3 rounded-xl bg-gradient-to-r from-brand-600 to-amberAccent-500 hover:from-brand-500 hover:to-amberAccent-400 text-white text-xs font-semibold text-center transition-all flex items-center justify-center gap-1.5 shadow-glow">
+                <i data-lucide="play" class="w-3.5 h-3.5"></i>
+                Assistir Vídeo no Instagram
+              </a>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- SOLUÇÕES DIGITAIS & SAAS PRÓPRIOS (TECNOLOGIA) -->
+    <section id="saas" class="py-24 relative bg-slateDark-900/80 border-t border-white/5">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center mb-16">
+          <div class="lg:col-span-8 space-y-4">
+            <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-cyan-500/10 border border-cyan-500/20 text-cyan-400 text-xs font-semibold uppercase tracking-wider">
+              <i data-lucide="cpu" class="w-3.5 h-3.5"></i>
+              Inovação Própria em Software & 3D
+            </div>
+            <h2 class="font-display font-black text-3xl sm:text-5xl text-white">
+              21 Ferramentas e Soluções Digitais Desenvolvidas
+            </h2>
+            <p class="text-slate-300 text-base leading-relaxed">
+              Além de atender clientes e causas sociais, transformo necessidades reais em <strong>produtos de software (SaaS)</strong>. Como estudante de Sistemas de Informação na Newton Paiva (conclusão em dez/2026), projeto e construo aplicações com foco em usabilidade, performance e utilidade imediata.
+            </p>
+          </div>
+
+          <div class="lg:col-span-4 flex justify-start lg:justify-end">
+            <div class="card-3d p-6 rounded-2xl bg-white/[0.03] border border-cyan-500/30 text-center space-y-2 backdrop-blur-md">
+              <div class="text-4xl font-display font-black text-cyan-400">21</div>
+              <div class="text-sm font-semibold text-white">Soluções Criadas</div>
+              <div class="text-xs text-slate-400">Marketing, Produtividade, Escrita e Design</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- SaaS Categorias Grid -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          
+          <div class="card-3d p-6 rounded-2xl bg-slateDark-850 border border-white/10 hover:border-cyan-500/40 transition-all">
+            <div class="w-12 h-12 rounded-xl bg-cyan-500/15 text-cyan-400 flex items-center justify-center mb-4">
+              <i data-lucide="pen-tool" class="w-6 h-6"></i>
+            </div>
+            <h3 class="font-display font-bold text-white text-lg mb-2">Escrita & Copywriting</h3>
+            <p class="text-xs text-slate-400 leading-relaxed mb-4">
+              Geradores de ideias, roteirizadores para Reels e YouTube, e utilitários para produção acelerada de textos persuasivos.
+            </p>
+            <span class="text-[11px] font-mono text-cyan-400 font-semibold">Web Apps & Micro-SaaS</span>
+          </div>
+
+          <div class="card-3d p-6 rounded-2xl bg-slateDark-850 border border-white/10 hover:border-brand-500/40 transition-all">
+            <div class="w-12 h-12 rounded-xl bg-brand-500/15 text-brand-400 flex items-center justify-center mb-4">
+              <i data-lucide="palette" class="w-6 h-6"></i>
+            </div>
+            <h3 class="font-display font-bold text-white text-lg mb-2">Design & Visual</h3>
+            <p class="text-xs text-slate-400 leading-relaxed mb-4">
+              Ferramentas de apoio à paleta de cores, enquadramento, exportação de presets e auxílio na criação de posts.
+            </p>
+            <span class="text-[11px] font-mono text-brand-400 font-semibold">Canvas & Image APIs</span>
+          </div>
+
+          <div class="card-3d p-6 rounded-2xl bg-slateDark-850 border border-white/10 hover:border-amberAccent-500/40 transition-all">
+            <div class="w-12 h-12 rounded-xl bg-amberAccent-500/15 text-amberAccent-400 flex items-center justify-center mb-4">
+              <i data-lucide="bar-chart-3" class="w-6 h-6"></i>
+            </div>
+            <h3 class="font-display font-bold text-white text-lg mb-2">Marketing & Leads</h3>
+            <p class="text-xs text-slate-400 leading-relaxed mb-4">
+              Calculadoras de ROI para tráfego pago, geradores de links para WhatsApp, rastreadores UTM e encurtadores inteligentes.
+            </p>
+            <span class="text-[11px] font-mono text-amberAccent-400 font-semibold">Automação & Conversão</span>
+          </div>
+
+          <div class="card-3d p-6 rounded-2xl bg-slateDark-850 border border-white/10 hover:border-emerald-500/40 transition-all">
+            <div class="w-12 h-12 rounded-xl bg-emerald-500/15 text-emerald-400 flex items-center justify-center mb-4">
+              <i data-lucide="check-square" class="w-6 h-6"></i>
+            </div>
+            <h3 class="font-display font-bold text-white text-lg mb-2">Produtividade & Jogos</h3>
+            <p class="text-xs text-slate-400 leading-relaxed mb-4">
+              Gamificação para ações educativas infantis (usados nas escolas de Minas Novas) e painéis de organização pessoal.
+            </p>
+            <span class="text-[11px] font-mono text-emerald-400 font-semibold">Gamificação & JS</span>
+          </div>
+
+        </div>
+
+        <!-- STACK DE TECNOLOGIA -->
+        <div class="mt-16 p-8 rounded-3xl bg-slateDark-850 border border-white/10">
+          <h3 class="text-center font-display font-bold text-white text-xl mb-6">
+            Linguagens, Frameworks e Ferramentas Dominadas
+          </h3>
+          <div class="flex flex-wrap items-center justify-center gap-3">
+            <span class="px-4 py-2 rounded-xl bg-white/5 border border-white/10 text-xs font-semibold text-slate-200 flex items-center gap-2">
+              <i data-lucide="box" class="w-3.5 h-3.5 text-brand-400"></i> Three.js / WebGL 3D
+            </span>
+            <span class="px-4 py-2 rounded-xl bg-white/5 border border-white/10 text-xs font-semibold text-slate-200 flex items-center gap-2">
+              <i data-lucide="code" class="w-3.5 h-3.5 text-brand-400"></i> HTML5 / CSS3 / Tailwind
+            </span>
+            <span class="px-4 py-2 rounded-xl bg-white/5 border border-white/10 text-xs font-semibold text-slate-200 flex items-center gap-2">
+              <i data-lucide="code" class="w-3.5 h-3.5 text-amberAccent-400"></i> JavaScript Moderno (ES6+)
+            </span>
+            <span class="px-4 py-2 rounded-xl bg-white/5 border border-white/10 text-xs font-semibold text-slate-200 flex items-center gap-2">
+              <i data-lucide="layers" class="w-3.5 h-3.5 text-cyan-400"></i> React & Node.js
+            </span>
+            <span class="px-4 py-2 rounded-xl bg-white/5 border border-white/10 text-xs font-semibold text-slate-200 flex items-center gap-2">
+              <i data-lucide="cpu" class="w-3.5 h-3.5 text-emerald-400"></i> Java & C#
+            </span>
+            <span class="px-4 py-2 rounded-xl bg-white/5 border border-white/10 text-xs font-semibold text-slate-200 flex items-center gap-2">
+              <i data-lucide="video" class="w-3.5 h-3.5 text-purple-400"></i> Premiere Pro & After Effects
+            </span>
+            <span class="px-4 py-2 rounded-xl bg-white/5 border border-white/10 text-xs font-semibold text-slate-200 flex items-center gap-2">
+              <i data-lucide="image" class="w-3.5 h-3.5 text-blue-400"></i> Photoshop & Lightroom
+            </span>
+            <span class="px-4 py-2 rounded-xl bg-white/5 border border-white/10 text-xs font-semibold text-slate-200 flex items-center gap-2">
+              <i data-lucide="share-2" class="w-3.5 h-3.5 text-emerald-400"></i> Meta Business & Tráfego Pago
+            </span>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- FORMAÇÃO & CERTIFICAÇÕES -->
+    <section class="py-24 relative border-t border-white/5">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <div class="text-center max-w-3xl mx-auto mb-16 space-y-4">
+          <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-brand-500/10 border border-brand-500/20 text-brand-400 text-xs font-semibold uppercase tracking-wider">
+            <i data-lucide="graduation-cap" class="w-3.5 h-3.5"></i>
+            Aprendizado Contínuo
+          </div>
+          <h2 class="font-display font-black text-3xl sm:text-5xl text-white">
+            Formação Acadêmica e Certificações
+          </h2>
+          <p class="text-slate-400 text-base">
+            Qualificação contínua unindo o ensino superior em tecnologia às principais certificações de marketing digital do mercado.
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+          
+          <!-- Graduação -->
+          <div class="card-3d p-8 rounded-3xl bg-slateDark-850 border border-white/10 hover:border-brand-500/40 transition-all space-y-4">
+            <div class="flex items-center justify-between">
+              <div class="w-12 h-12 rounded-2xl bg-brand-500/15 text-brand-400 flex items-center justify-center">
+                <i data-lucide="award" class="w-6 h-6"></i>
+              </div>
+              <span class="px-3 py-1 rounded-full text-xs font-bold bg-brand-500/20 text-brand-300 border border-brand-500/30">
+                Em Andamento
+              </span>
+            </div>
+            
+            <h3 class="font-display font-bold text-2xl text-white">
+              Bacharelado em Sistemas de Informação
+            </h3>
+            <p class="text-sm font-semibold text-brand-400">
+              Centro Universitário Newton Paiva — Belo Horizonte–MG
+            </p>
+            <p class="text-xs text-slate-300 leading-relaxed">
+              Formação sólida em engenharia de software, modelagem de banco de dados, governança de TI, desenvolvimento de soluções escaláveis e arquitetura de sistemas.
+            </p>
+            <div class="pt-2 text-xs text-slate-400 flex items-center gap-2">
+              <i data-lucide="calendar" class="w-4 h-4 text-brand-400"></i>
+              <span>Previsão de conclusão: Dezembro de 2026</span>
+            </div>
+          </div>
+
+          <!-- Cursos & Certificados -->
+          <div class="card-3d p-8 rounded-3xl bg-slateDark-850 border border-white/10 space-y-4">
+            <div class="flex items-center justify-between">
+              <div class="w-12 h-12 rounded-2xl bg-amberAccent-500/15 text-amberAccent-400 flex items-center justify-center">
+                <i data-lucide="check-circle-2" class="w-6 h-6"></i>
+              </div>
+              <span class="px-3 py-1 rounded-full text-xs font-bold bg-white/5 text-slate-300 border border-white/10">
+                Certificados Disponíveis
+              </span>
+            </div>
+
+            <h3 class="font-display font-bold text-2xl text-white">
+              Cursos e Certificações Relevantes
+            </h3>
+
+            <div class="space-y-3 pt-2">
+              <div class="p-3 rounded-xl bg-white/[0.02] border border-white/5 flex items-center justify-between">
+                <div>
+                  <div class="text-xs font-bold text-white">Fundamentos de Marketing Digital</div>
+                  <div class="text-[11px] text-slate-400">Google Ateliê Digital / Google Skillshop (40 horas)</div>
+                </div>
+                <i data-lucide="check" class="w-4 h-4 text-emerald-400"></i>
+              </div>
+
+              <div class="p-3 rounded-xl bg-white/[0.02] border border-white/5 flex items-center justify-between">
+                <div>
+                  <div class="text-xs font-bold text-white">Tráfego Pago & Performance</div>
+                  <div class="text-[11px] text-slate-400">Cacto</div>
+                </div>
+                <i data-lucide="check" class="w-4 h-4 text-emerald-400"></i>
+              </div>
+
+              <div class="p-3 rounded-xl bg-white/[0.02] border border-white/5 flex items-center justify-between">
+                <div>
+                  <div class="text-xs font-bold text-white">Inbound & E-mail Marketing</div>
+                  <div class="text-[11px] text-slate-400">HubSpot Academy</div>
+                </div>
+                <i data-lucide="check" class="w-4 h-4 text-emerald-400"></i>
+              </div>
+
+              <div class="p-3 rounded-xl bg-white/[0.02] border border-white/5 flex items-center justify-between">
+                <div>
+                  <div class="text-xs font-bold text-white">Desenvolvimento de Software & Programação Web</div>
+                  <div class="text-[11px] text-slate-400">DevMedia & Udemy</div>
+                </div>
+                <i data-lucide="check" class="w-4 h-4 text-emerald-400"></i>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+    <!-- CONTATO & DISPONIBILIDADE -->
+    <section id="contato" class="py-24 relative bg-slateDark-900 border-t border-white/5">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-12">
+          
+          <div class="lg:col-span-6 space-y-6">
+            <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-brand-500/10 border border-brand-500/20 text-brand-400 text-xs font-semibold uppercase tracking-wider">
+              <i data-lucide="mail" class="w-3.5 h-3.5"></i>
+              Vamos Conversar
+            </div>
+
+            <h2 class="font-display font-black text-3xl sm:text-5xl text-white leading-tight">
+              Pronto para somar na sua equipe, projeto ou instituição.
+            </h2>
+
+            <p class="text-slate-300 text-base leading-relaxed">
+              Estou pronto para atuar em vagas formais, projetos de consultoria, comunicação institucional, produções audiovisuais ou desenvolvimento de soluções digitais.
+            </p>
+
+            <div class="p-5 rounded-2xl bg-emerald-500/10 border border-emerald-500/30 space-y-2">
+              <div class="flex items-center gap-2 text-emerald-300 font-bold text-sm">
+                <i data-lucide="map-pin" class="w-4 h-4"></i>
+                Disponibilidade e Mudança
+              </div>
+              <p class="text-xs text-emerald-200/90 leading-relaxed">
+                Residente em <strong>Minas Novas–MG</strong> com total disponibilidade para <strong>mudança imediata para Araçuaí–MG</strong>, bem como viagens e deslocamentos frequentes para comunidades rurais de todo o Vale do Jequitinhonha.
+              </p>
+            </div>
+
+            <!-- Direct Contact Links -->
+            <div class="space-y-3 pt-2">
+              <a href="https://wa.me/5533999285190" target="_blank" class="card-3d p-4 rounded-2xl bg-white/[0.03] border border-white/10 hover:border-brand-500/40 hover:bg-white/[0.06] transition-all flex items-center justify-between group">
+                <div class="flex items-center gap-3">
+                  <div class="w-10 h-10 rounded-xl bg-emerald-500/20 text-emerald-400 flex items-center justify-center">
+                    <i data-lucide="phone" class="w-5 h-5"></i>
+                  </div>
+                  <div>
+                    <div class="text-xs text-slate-400">Telefone / WhatsApp</div>
+                    <div class="text-sm font-bold text-white group-hover:text-brand-300 transition-colors">(33) 99928-5190</div>
+                  </div>
+                </div>
+                <i data-lucide="external-link" class="w-4 h-4 text-slate-500 group-hover:text-white transition-colors"></i>
+              </a>
+
+              <div class="card-3d p-4 rounded-2xl bg-white/[0.03] border border-white/10 hover:border-brand-500/40 hover:bg-white/[0.06] transition-all flex items-center justify-between group cursor-pointer" onclick="copyToClipboard('samuel.lenicio8@gmail.com', 'E-mail copiado com sucesso!')">
+                <div class="flex items-center gap-3">
+                  <div class="w-10 h-10 rounded-xl bg-brand-500/20 text-brand-400 flex items-center justify-center">
+                    <i data-lucide="mail" class="w-5 h-5"></i>
+                  </div>
+                  <div>
+                    <div class="text-xs text-slate-400">E-mail Profissional (clique para copiar)</div>
+                    <div class="text-sm font-bold text-white group-hover:text-brand-300 transition-colors">samuel.lenicio8@gmail.com</div>
+                  </div>
+                </div>
+                <i data-lucide="copy" class="w-4 h-4 text-slate-500 group-hover:text-white transition-colors"></i>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Form / Direct WhatsApp Composer -->
+          <div class="lg:col-span-6">
+            <div class="card-3d p-8 sm:p-10 rounded-3xl bg-slateDark-850 border border-white/10 shadow-2xl space-y-6">
+              <h3 class="font-display font-bold text-white text-2xl">
+                Envie uma mensagem direta
+              </h3>
+              <p class="text-xs text-slate-400">
+                Preencha os campos abaixo para abrir uma conversa no WhatsApp já formatada com os dados do seu contato.
+              </p>
+
+              <form id="contact-form" onsubmit="handleContactSubmit(event)" class="space-y-4">
+                <div>
+                  <label class="block text-xs font-semibold text-slate-300 mb-1.5" for="name">Seu Nome ou Instituição</label>
+                  <input type="text" id="name" required placeholder="Ex.: Maria (ONG / Prefeitura / Projeto)" class="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-slate-500 text-sm focus:outline-none focus:border-brand-500 transition-colors">
+                </div>
+
+                <div>
+                  <label class="block text-xs font-semibold text-slate-300 mb-1.5" for="interest">Assunto Principal</label>
+                  <select id="interest" class="w-full px-4 py-3 rounded-xl bg-[#141b2b] border border-white/10 text-white text-sm focus:outline-none focus:border-brand-500 transition-colors">
+                    <option value="Vaga ou Oportunidade em Araçuaí/Região">Vaga de Trabalho em Araçuaí / Região</option>
+                    <option value="Comunicação Comunitária ou Social">Comunicação Popular / Ação Social</option>
+                    <option value="Produção Audiovisual ou Videoclipe">Produção Audiovisual / Videoclipe</option>
+                    <option value="Desenvolvimento de Site ou Software">Desenvolvimento de Site / Software</option>
+                    <option value="Estratégia Digital e Gestão Artística">Estratégia Digital e Gestão Artística</option>
+                    <option value="Outro Assunto">Outro Assunto</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label class="block text-xs font-semibold text-slate-300 mb-1.5" for="message">Mensagem</label>
+                  <textarea id="message" rows="4" required placeholder="Conte brevemente sobre sua demanda ou oportunidade..." class="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 text-white placeholder-slate-500 text-sm focus:outline-none focus:border-brand-500 transition-colors"></textarea>
+                </div>
+
+                <button type="submit" class="w-full py-3.5 rounded-xl bg-gradient-to-r from-brand-600 to-amberAccent-500 hover:from-brand-500 hover:to-amberAccent-400 text-white font-bold text-sm shadow-glow transition-all flex items-center justify-center gap-2">
+                  <i data-lucide="send" class="w-4 h-4"></i>
+                  <span>Enviar pelo WhatsApp Agora</span>
+                </button>
+              </form>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="py-12 border-t border-white/10 bg-[#06080e] relative z-10 text-slate-400 text-xs">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-6">
+      
+      <div class="flex items-center gap-3">
+        <div class="w-8 h-8 rounded-full overflow-hidden border border-brand-500/40">
+          <img src="assets/samuel.jpg" alt="Samuel" class="w-full h-full object-cover object-top">
+        </div>
+        <div>
+          <span class="font-bold text-white">Samuel Lenício Ferreira Pires</span>
+          <p class="text-[11px] text-slate-500">Minas Novas – MG • Vale do Jequitinhonha</p>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-6">
+        <a href="#sobre" class="hover:text-white transition-colors">Sobre</a>
+        <a href="#portfolio" class="hover:text-white transition-colors">Portfólio</a>
+        <a href="#case-jequi" class="hover:text-white transition-colors">Case 500k</a>
+        <a href="#saas" class="hover:text-white transition-colors">SaaS</a>
+        <a href="#contato" class="hover:text-white transition-colors">Contato</a>
+      </div>
+
+      <div class="text-center sm:text-right text-[11px] text-slate-500">
+        © 2026 Samuel Lenício. Desenvolvido com identidade, audiovisual e tecnologia 3D.
+      </div>
+
+    </div>
+  </footer>
+
+  <!-- MODAL DETAILS -->
+  <div id="project-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-md hidden items-center justify-center p-4">
+    <div class="relative w-full max-w-2xl bg-slateDark-850 border border-white/10 rounded-3xl p-6 sm:p-8 shadow-2xl max-h-[90vh] overflow-y-auto">
+      <button onclick="closeModal()" class="absolute top-5 right-5 p-2 rounded-full bg-white/5 hover:bg-white/10 text-slate-400 hover:text-white transition-all">
+        <i data-lucide="x" class="w-5 h-5"></i>
+      </button>
+
+      <div id="modal-content" class="space-y-4">
+        <!-- Content injected via JS -->
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

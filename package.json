@@ -1,0 +1,21 @@
+{
+  "name": "samuel-lenicio-portfolio",
+  "version": "1.0.0",
+  "description": "Portfólio Profissional de Samuel Lenício Ferreira Pires - Comunicação Popular, Audiovisual, Estratégia Digital e Tecnologia",
+  "main": "index.html",
+  "scripts": {
+    "start": "npx serve .",
+    "dev": "npx serve ."
+  },
+  "keywords": [
+    "portfolio",
+    "samuel-lenicio",
+    "comunicacao-popular",
+    "audiovisual",
+    "jequitinhonha",
+    "sistemas-de-informacao"
+  ],
+  "author": "Samuel Lenício Ferreira Pires",
+  "license": "MIT"
+}
+
